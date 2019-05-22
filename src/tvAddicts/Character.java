@@ -13,5 +13,13 @@ public interface Character  extends Comparable<Character>{
 	
 	void addQuote(int seasonNum, int episodeNum, String quote);
 	
-	Iterator<Quotes> quotesIterator();
+	Iterator<Character> parentsIterator();
+	
+	Iterator<Character> kidsIterator();
+	
+	Iterator<Character> siblingsIterator();
+	
+	Iterator<Character> romanticIterator();
+	
+	Iterator<Quote> quotesIterator();
 }

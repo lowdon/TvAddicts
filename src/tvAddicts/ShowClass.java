@@ -117,7 +117,7 @@ public class ShowClass implements Show {
 		Iterator<Character> characterList = characterListIterator();
 		while(characterList.hasNext()) {
 			Character character = characterList.next();
-			Iterator<Quotes> quotesList = character.quotesIterator();
+			Iterator<Quote> quotesList = character.quotesIterator();
 			boolean finded = false;
 			while(quotesList.hasNext()) {
 				if(quotesList.next().quote().equals(quote) && !finded) {
