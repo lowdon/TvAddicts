@@ -1,11 +1,13 @@
 Topo
-ShowList
-CGIList (TreeSet)
-MostRomanticList (TreeSet)
+ShowList (HashMap)
+CGIList (HashMap)
+SortedCGIList (TreeSet)
+sortedActorList (TreeSet)  (MostRomanticList)(como esta ordenada a actor list funciona como MostRomanticList)
+ActorList (HashMap)
 
 Show
 SeasonList
-CharacterList
+CharacterList (HashMap)
 
 Season
 EpisodeList
@@ -22,5 +24,3 @@ CharacterResumeList
 
 Actor
 RolesList (TreeSet)
-
-TESTE TESTE TESTE
