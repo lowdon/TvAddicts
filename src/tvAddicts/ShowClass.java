@@ -5,17 +5,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class ShowClass implements Show {
 
 	private final String name;
 	private List<Season> SeasonList;
-	private Map<String,Character> CharacterList;
+	private Map<String,Character> characterList;
 	
 	public ShowClass(String name) {
 		this.name = name;
 		SeasonList = new ArrayList<Season>();
-		CharacterList = new HashMap<String,Character>();
+		characterList = new HashMap<String,Character>();
 	}
 
 	@Override
@@ -55,26 +57,26 @@ public class ShowClass implements Show {
 
 	@Override
 	public void addRealCharacter(String characterName, Actor actor, int feeByEpisode) {
-		CharacterList.put(characterName, new RealCharacterClass (characterName, actor, feeByEpisode));
+		characterList.put(characterName, new RealCharacterClass (characterName, actor, feeByEpisode));
 	}
 
 	@Override
 	public void addVirtualCharacter(String characterName, CGI company, int costPerSeason) {
-		CharacterList.put(characterName, new VirtualCharacterClass (characterName, company, costPerSeason));
+		characterList.put(characterName, new VirtualCharacterClass (characterName, company, costPerSeason));
 	}
 
 	@Override
 	public void addRelationship(String character1Name, String character2Name) {
-		Character parent = CharacterList.get(character1Name);
-		Character child = CharacterList.get(character2Name);
+		Character parent = characterList.get(character1Name);
+		Character child = characterList.get(character2Name);
 		parent.addChild(child);
 		child.addParent(parent);
 	}
 
 	@Override
 	public void addRomance(String character1Name, String character2Name) {
-		Character character1 = CharacterList.get(character1Name);
-		Character character2 = CharacterList.get(character2Name);
+		Character character1 = characterList.get(character1Name);
+		Character character2 = characterList.get(character2Name);
 		character1.addRomance(character2);
 		character2.addRomance(character1);
 	}
@@ -86,7 +88,7 @@ public class ShowClass implements Show {
 
 	@Override
 	public void addQuote(int seasonNum, int episodeNum, String characterName, String quote) {
-		CharacterList.get(characterName).addQuote(seasonNum, episodeNum, quote);
+		characterList.get(characterName).addQuote(seasonNum, episodeNum, quote);
 	}
 
 	@Override
@@ -100,8 +102,7 @@ public class ShowClass implements Show {
 
 	@Override
 	public Character character(String characterName) {
-		// TODO Auto-generated method stub
-		return null;
+		return characterList.get(characterName);
 	}
 
 	@Override
@@ -112,14 +113,25 @@ public class ShowClass implements Show {
 
 	@Override
 	public Iterator<Character> famousQuotes(String quote) {
-		// TODO Auto-generated method stub
-		return null;
+		Set<Character> famousQuotes = new TreeSet<Character>();
+		Iterator<Character> characterList = characterListIterator();
+		while(characterList.hasNext()) {
+			Character character = characterList.next();
+			Iterator<Quotes> quotesList = character.quotesIterator();
+			boolean finded = false;
+			while(quotesList.hasNext()) {
+				if(quotesList.next().quote().equals(quote) && !finded) {
+					famousQuotes.add(character);
+					finded = true;
+				}	
+			}
+		}
+		return famousQuotes.iterator();
 	}
 
 	@Override
-	public Iterator<String> characterList() {
-		// TODO Auto-generated method stub
-		return null;
+	public Iterator<Character> characterListIterator() {
+		return characterList.values().iterator();
 	}
 
 }

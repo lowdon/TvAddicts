@@ -42,9 +42,9 @@ public class TvAddictsClass implements TvAdditcts {
 	@Override
 	public void addSeason() {
 		currentShow.addSeason();
-		Iterator<String> characterList = currentShow.characterList();
+		Iterator<Character> characterList = currentShow.characterListIterator();
 		while (characterList.hasNext()) {
-			Character character = currentShow.character(characterList.next());
+			Character character = characterList.next();
 			if(character instanceof VirtualCharacter) {
 				((VirtualCharacter) character).company().addFeesCollected(((VirtualCharacter) character).costPerSeason());
 			}

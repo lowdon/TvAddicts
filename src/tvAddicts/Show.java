@@ -34,6 +34,6 @@ public interface Show extends Comparable<Show>{
 	
 	Iterator<Character> famousQuotes (String quote);
 	
-	Iterator<String> characterList();  //Iterator<String> characterList = currentShow.characterList().keySet().iterator();
+	Iterator<Character> characterListIterator(); 
 	
 }
