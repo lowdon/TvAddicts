@@ -105,10 +105,48 @@ public class ShowClass implements Show {
 		return characterList.get(characterName);
 	}
 
+	
 	@Override
 	public Iterator<Character> howAreTheseTwoRelated(String character1Name, String character2Name) {
-		// TODO Auto-generated method stub
-		return null;
+		Character character1 = characterList.get(character1Name);
+		Character character2 = characterList.get(character2Name);
+		List<Character> related = new ArrayList<Character>();
+		howAreTheseTwoRelatedAux(character1, character2, related);
+		
+		if (related.size() == 0) {
+			howAreTheseTwoRelatedAux(character2, character1, related);
+			if (related.size() == 0) {
+				return null;
+			}
+		}			
+		return related.iterator();
+		
+	}
+	
+	private void howAreTheseTwoRelatedAux(Character character1, Character character2, List<Character> related) {
+		//este metodo vai testar se o <code>character1Name</code> e descendente de <code>character2Name</code>
+		Iterator<Character> kidsIterator = character1.kidsIterator();
+		related.add(character1);
+		int counter = 1;
+		boolean finded = false;
+		while (kidsIterator.hasNext()) {
+			Character kid = kidsIterator.next();
+			related.add(kid);
+			counter++;
+			if(kid.equals(character2)) {
+				related.add(character2);
+				counter = -1; // -1 é um valor que um size nunca pode tomar por isso foi escolhido aqui
+				finded=true;
+			}
+			else {
+				howAreTheseTwoRelatedAux(kid,character2,related);
+			}
+			if(related.size() == counter && !finded) {
+				related.remove(kid);
+				counter--;
+			}
+		}
+		related.clear();
 	}
 
 	@Override
