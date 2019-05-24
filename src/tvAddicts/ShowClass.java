@@ -47,7 +47,9 @@ public class ShowClass implements Show {
 
 	@Override
 	public void addSeason() {
-		SeasonList.add(new SeasonClass());
+		int seasonNumber = SeasonList.size();
+		seasonNumber++;
+		SeasonList.add(new SeasonClass(seasonNumber));
 	}
 
 	@Override
@@ -95,7 +97,10 @@ public class ShowClass implements Show {
 	public Iterator<Episode> seasonsOutline(int startingSeason, int endingSeason) {
 		List<Episode> seasonsOutline = new ArrayList<Episode>();
 		for (int i = startingSeason - 1; i < endingSeason ; i++) {
-			seasonsOutline.addAll(SeasonList.get(i).episodesList());
+			Iterator<Episode> episodesList = SeasonList.get(i).episodesList();
+			while (episodesList.hasNext()) {
+				seasonsOutline.add(episodesList.next());
+			}
 		}
 		return seasonsOutline.iterator();
 	}
