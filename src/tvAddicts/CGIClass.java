@@ -36,6 +36,7 @@ public class CGIClass implements CGI {
 		return feesCollected;
 	}
 
+	@Override
 	public int compareTo(CGI o) {
 		if (o.feesCollected() > this.feesCollected) {
 			return 1;

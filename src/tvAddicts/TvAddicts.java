@@ -2,25 +2,27 @@ package tvAddicts;
 
 import java.util.Iterator;
 
-public interface Show extends Comparable<Show>{
+public interface TvAddicts {
 
 	/**
-	 * @return nome identificativo do <code>Show</code>
+	 * @return <code>Show</code> atual
 	 */
-	String name();
+	Show currentShow ();
 	
 	/**
-	 * @return numero de <code>Season</code> do <code>Show</code>
+	 * adiciona um <code>Show</code>
+	 * @param showName nome identificativo do <code>Show</code>
 	 */
-	int seasonsNumber();
+	void addShow(String showName);
 	
 	/**
-	 * @return numero de <code>Episode</code> do <code>Show</code>
+	 * altera o <code>Show</code> atual
+	 * @param showName nome identificativo do <code>Show</code>
 	 */
-	int episodesNumber();
+	void switchToShow(String showName);
 	
 	/**
-	 * adicioana uma nova <code>Season</code> ao <code>Show</code>
+	 * adiciona um <code>Season</code> a um <code>Show</code>
 	 */
 	void addSeason();
 	
@@ -37,7 +39,7 @@ public interface Show extends Comparable<Show>{
 	 * @param actor <code>Actor</code> que faz de <code>Character</code>
 	 * @param feeByEpisode dinehro recebido por <code>Episode</code> pelo <code>Actor</code>
 	 */
-	void addRealCharacter(String characterName, Actor actor, int feeByEpisode);
+	void addRealCharacter(String characterName, String actorName, int feeByEpisode);
 	
 	/**
 	 * adiciona um novo <code>VirtualCharacter</code>
@@ -45,7 +47,7 @@ public interface Show extends Comparable<Show>{
 	 * @param company <code>CGI</code> que criou o <code>Character</code>
 	 * @param costPerSeason dinheiro recebido pela <code>CGI</code> por cada <code>Season</code> em que o <code>Character</code> partecipa
 	 */
-	void addVirtualCharacter(String characterName, CGI company, int costPerSeason);
+	void addVirtualCharacter(String characterName, String companyName, int costPerSeason);
 	
 	/**
 	 * adiciona uma relacao entre dois <code>Character</code>
@@ -80,7 +82,7 @@ public interface Show extends Comparable<Show>{
 	void addQuote(int seasonNum, int episodeNum, String characterName, String quote);
 	
 	/**
-	 * resumo de partes do<code>Show</code>
+	 * resumo de partes do <code>Show</code>
 	 * @param startingSeason <code>Season</code> onde comeca o resumo
 	 * @param endingSeason <code>Season</code> onde termina o resumo
 	 * @return lista dos episodios do resumo
@@ -91,7 +93,7 @@ public interface Show extends Comparable<Show>{
 	 * @param characterName nome do <code>Character</code>
 	 * @return <code>Character</code>
 	 */
-	Character character(String characterName);
+	Character characterResume(String characterName);
 	
 	/**
 	 * @param character1Name nome do primeiro <code>Character</code>
@@ -107,8 +109,20 @@ public interface Show extends Comparable<Show>{
 	Iterator<Character> famousQuotes (String quote);
 	
 	/**
-	 * @return lista de <code>Character</code> que fazem parte do <code>Show</code>
+	 * @param characterName nome do <code>Character</code>
+	 * @return lista de <code>Show</code> onde o <code>Actor</code> do <code>Character</code> partecipa
 	 */
-	Iterator<Character> characterListIterator(); 
+	Iterator<Show> alsoAppearsOn (String characterName);
+	
+	/**
+	 * @param actorName nome do <code>Actor</code>
+	 * @return lista de <code>Actor</code> que sao mais romanticos que o <code>Actor dado</code> (por ordem crescente de romancismo)
+	 */
+	Iterator<Actor> mostRomantic (String actorName);
+	
+	/**
+	 * @return <code>CGI</code> que mais lucro vez com os seus <code>VirtualCharacter</code>
+	 */
+	CGI kingOfGDI();
 	
 }

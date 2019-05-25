@@ -6,7 +6,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.HashMap;
 
-public class TvAddictsClass implements TvAdditcts {
+public class TvAddictsClass implements TvAddicts {
 
 	private Map<String,Show> showList;
 	private Map<String,CGI> cGIList;
