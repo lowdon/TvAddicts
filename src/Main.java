@@ -349,6 +349,60 @@ public class Main {
 	}
 	
 	private static void characterResume(Scanner in, TvAddicts addicts) {
+		String characterName = in.nextLine().trim();
+		try {
+			Character character = addicts.character(characterName);
+			System.out.print("Parents: ");
+			Iterator<Character> parentsIterator = character.parentsIterator();
+			if(!parentsIterator.hasNext())
+				System.out.println("");
+			else {
+				System.out.println(parentsIterator.next());
+				while (parentsIterator.hasNext())
+					System.out.println(", " + parentsIterator.next());
+			}
+				
+			System.out.println("Kids: ");
+			Iterator<Character> kidsIterator = character.kidsIterator();
+			if(!kidsIterator.hasNext())
+				System.out.println("None.");
+			else {
+				System.out.println(kidsIterator.next());
+				while (kidsIterator.hasNext())
+					System.out.println(", " + kidsIterator.next());
+			}
+			
+			
+			System.out.println("Siblings: ");
+			
+			Iterator<Character> SiblingsIterator = character.siblingsIterator();
+			if(!SiblingsIterator.hasNext())
+				System.out.println("None.");
+			else {
+				System.out.println(SiblingsIterator.next());
+				while (SiblingsIterator.hasNext())
+					System.out.println(", " + SiblingsIterator.next());
+			}
+			
+			
+			System.out.println("Romantic relationships: ");
+			Iterator<Character> RomanticIterator = character.romanticIterator();
+			if(!RomanticIterator.hasNext())
+				System.out.println("None.");
+			else {
+				System.out.println(RomanticIterator.next());
+				while (RomanticIterator.hasNext())
+					System.out.println(", " + RomanticIterator.next());
+			}
+			
+			System.out.println("");// addicts.showOutline();
+		}
+		catch (NoShowSelectedException exception) {
+			 System.out.println("No show is selected!");
+		}
+		catch (UnknownCharacterException exception) {
+			 System.out.println("Who is " + exception.getMessage() + "?");
+		}
 		
 	}
 	

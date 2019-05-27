@@ -220,6 +220,20 @@ public class ShowClass implements Show {
 		return characterList.values().iterator();
 	}
 	
+	@Override
+	public Iterator<Episode> showOutline() {
+		List<Episode> characterOutline = new ArrayList<Episode>();
+		Iterator<Season> iterator = SeasonList.iterator();
+		while(iterator.hasNext()) {
+			Iterator<Episode> episodesList = iterator.next().episodesList();
+			while (episodesList.hasNext()) {
+				characterOutline.add(episodesList.next());
+			}
+		}
+		return characterOutline.iterator();
+	}
+	
+	
 	private void unknownQuoteException(Set<Character> famousQuotes) throws UnknownQuoteException {
 		if (famousQuotes.size() == 0)
 			throw new UnknownQuoteException();
@@ -285,4 +299,5 @@ public class ShowClass implements Show {
 			if(characterListIterator.next().equals(characterName))
 				throw new DuplicateCharacterException();
 	}
+
 }

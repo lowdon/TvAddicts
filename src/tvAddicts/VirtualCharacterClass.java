@@ -1,7 +1,7 @@
 package tvAddicts;
 
 
-public class VirtualCharacterClass extends CharacterAbstract implements VirtualCharacter {
+public class VirtualCharacterClass extends CharacterAbstractClass implements VirtualCharacter {
 	
 	private CGI company;
 

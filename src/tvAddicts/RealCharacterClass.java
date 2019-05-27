@@ -1,6 +1,6 @@
 package tvAddicts;
 
-public class RealCharacterClass extends CharacterAbstract implements RealCharacter {
+public class RealCharacterClass extends CharacterAbstractClass implements RealCharacter {
 	
 	private Actor actor;
 	
@@ -10,6 +10,7 @@ public class RealCharacterClass extends CharacterAbstract implements RealCharact
 		this.actor = actor;
 		this.cost = feeByEpisode;
 		this.show = show;
+		actor.addRole(show);
 	}
 
 	@Override
@@ -26,6 +27,14 @@ public class RealCharacterClass extends CharacterAbstract implements RealCharact
 	@Override
 	public int feeByEpisode() {
 		return cost();
+	}
+	
+	@Override
+	public void addRomance(Character character) {
+		if(!this.romanticIterator().hasNext())
+			actor.addFirstRomanceInShow();
+		super.addRomance(character);
+		actor.addRomance();
 	}
 
 }

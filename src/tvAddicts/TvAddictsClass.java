@@ -200,6 +200,13 @@ public class TvAddictsClass implements TvAddicts {
 		return ((TreeSet<CGI>) sortedCGIList).first();
 	}
 
+
+	@Override
+	public Iterator<Episode> showOutline() throws NoShowSelectedException {
+		noShowSelectedExeption();
+		return currentShow.showOutline();
+	}
+	
 	private void noVirtualCharactersException() throws NoVirtualCharactersException {
 		if (((TreeSet<CGI>) sortedCGIList).first().equals(null))
 			throw new NoVirtualCharactersException();
@@ -241,4 +248,5 @@ public class TvAddictsClass implements TvAddicts {
 		if (!finded)
 			throw new UnknownShowException();
 	}
+
 }
