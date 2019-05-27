@@ -10,6 +10,8 @@ public class VirtualCharacterClass extends CharacterAbstractClass implements Vir
 		this.company = company;
 		this.cost = costPerSeason;
 		this.show = show;
+		company.addVirtualCharacter();
+		company.addFeesCollected(costPerSeason);
 	}
 
 	@Override
@@ -20,11 +22,6 @@ public class VirtualCharacterClass extends CharacterAbstractClass implements Vir
 	@Override
 	public int costPerSeason() {
 		return this.cost;
-	}
-
-	@Override
-	public Actor actor() {
-		return null;
 	}
 
 }

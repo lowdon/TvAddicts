@@ -202,9 +202,9 @@ public class TvAddictsClass implements TvAddicts {
 
 
 	@Override
-	public Iterator<Episode> showOutline() throws NoShowSelectedException {
+	public Iterator<Episode> characterOutline(Character character) throws NoShowSelectedException {
 		noShowSelectedExeption();
-		return currentShow.showOutline();
+		return currentShow.characterOutline(character);
 	}
 	
 	private void noVirtualCharactersException() throws NoVirtualCharactersException {

@@ -394,8 +394,20 @@ public class Main {
 				while (RomanticIterator.hasNext())
 					System.out.println(", " + RomanticIterator.next());
 			}
+			Iterator<Episode> characterOutline = addicts.characterOutline(character);
+			while(characterOutline.hasNext()) {
+				Episode episode = characterOutline.next();
+				System.out.println("S" + episode.season().number() + " Ep" + episode.number() + ": " + episode.name());
+				Iterator<Event> eventsList = episode.eventsList();
+				while (eventsList.hasNext()) {
+					Event event = eventsList.next();
+					Iterator<Character> involvedCharacters = event.involvedCharacters();
+					while(involvedCharacters.hasNext()) 
+						if(involvedCharacters.next().equals(character))
+							System.out.println(event.descriptionOfTheEvent());
+				}
+			}
 			
-			System.out.println("");// addicts.showOutline();
 		}
 		catch (NoShowSelectedException exception) {
 			 System.out.println("No show is selected!");
@@ -407,25 +419,101 @@ public class Main {
 	}
 	
 	private static void howAreTheseTwoRelated(Scanner in, TvAddicts addicts) {
+		String character1Name = in.nextLine().trim();
+		String character2Name = in.nextLine().trim();
+		
+		try {
+			
+			Iterator<Character> howAreTheseTwoRelated = addicts.howAreTheseTwoRelated(character1Name, character2Name);
+			if(howAreTheseTwoRelated.hasNext()) {
+				System.out.print(howAreTheseTwoRelated.next().name());
+				while (howAreTheseTwoRelated.hasNext())
+					System.out.println("; " + howAreTheseTwoRelated.next().name());
+			}
+			
+			
+		}
+		catch (NoShowSelectedException exception) {
+			System.out.println("No show is selected!");
+		} 
+		catch (UnknownCharacterException exception) {
+			System.out.println("Who is " + exception.getMessage() + "?");
+		} 
+		catch (SameCharacterException exception) {
+			System.out.println("Like... you know, they are THE SAME character! duuuuh...");
+		} 
+		catch (NoRealatedCharactersException exception) {
+			System.out.println("These characters are not related!");
+		}
 		
 	}
 	
 	private static void famousQuotes(Scanner in, TvAddicts addicts) {
-		
+		String quote = in.nextLine().trim();
+		try {
+			Iterator<Character> famousQuotes = addicts.famousQuotes(quote);
+			if(famousQuotes.hasNext()) {
+				System.out.println(famousQuotes.next().name());
+				while(famousQuotes.hasNext())
+					System.out.println(", " + famousQuotes.next().name());
+			}
+			
+		}
+		catch (NoShowSelectedException exception) {
+			System.out.println("No show is selected!");
+		} 
+		catch (UnknownQuoteException exception) {
+			System.out.println("First time I hear that!");
+		}
 	}
 	
 	private static void alsoAppearsOn(Scanner in, TvAddicts addicts) {
-		
+		String characterName = in.nextLine().trim();
+		try {
+			Iterator<Show> alsoAppearsOn = addicts.alsoAppearsOn(characterName);
+			while (alsoAppearsOn.hasNext())
+				System.out.println(alsoAppearsOn.next().name());
+			
+		}
+		catch (NoShowSelectedException exception) {
+			 System.out.println("No show is selected!");
+		} 
+		catch (UnknownCharacterException exception) {
+			System.out.println("Who is " + exception.getMessage() + "?");
+		} 
+		catch (VirtualActorException exception) {
+			System.out.println(characterName + " is played by a virtual actor!");
+		}
 	}
 	
 	private static void mostRomantic(Scanner in, TvAddicts addicts) {
-		
+		String actorName = in.nextLine().trim();
+		try {
+			Iterator<Actor> mostRomantic = addicts.mostRomantic(actorName);
+			while(mostRomantic.hasNext()) {
+				Actor actor = mostRomantic.next();
+				System.out.println(actor.name() + " " + actor.romanticNumber());
+			}
+			
+		}
+		catch (UnknownActorException exception) {
+			System.out.println("Who is " + actorName + "?");
+		} 
+		catch (NoRomanticCharactersException exception) {
+			System.out.println("Love is not in the air. :-(");
+		}
 	}
 	
 	private static void kingOfCGI(Scanner in, TvAddicts addicts) {
 		
+		try {
+			CGI kingOfGDI = addicts.kingOfGDI();
+			System.out.println(kingOfGDI.name() + " " + kingOfGDI.feesCollected());
+		}
+		catch (NoVirtualCharactersException exception) {
+			 System.out.println("This is the real thing, this is art!");
+		}
 	}
-
 
 	
 	}

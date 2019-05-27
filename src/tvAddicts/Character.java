@@ -10,8 +10,6 @@ public interface Character extends Comparable<Character>{
 	
 	int cost();
 	
-	Actor actor();
-	
 	void addParent(Character parent);
 	
 	void addChild(Character child);

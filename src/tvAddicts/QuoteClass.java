@@ -27,4 +27,5 @@ public class QuoteClass implements Quote {
 		return episodeNum;
 	}
 
+
 }

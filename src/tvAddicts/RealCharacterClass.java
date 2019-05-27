@@ -18,11 +18,6 @@ public class RealCharacterClass extends CharacterAbstractClass implements RealCh
 		return this.actor;
 	}
 
-	@Override
-	public String characterName() {
-		return name();
-	}
-
 
 	@Override
 	public int feeByEpisode() {

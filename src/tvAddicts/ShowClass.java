@@ -53,6 +53,13 @@ public class ShowClass implements Show {
 		int seasonNumber = SeasonList.size();
 		seasonNumber++;
 		SeasonList.add(new SeasonClass(seasonNumber));
+		
+		Iterator<String> iterator = characterList.keySet().iterator();
+		while(iterator.hasNext()) {
+			Character character = characterList.get(iterator.next());
+			if (character instanceof VirtualCharacter)
+				((VirtualCharacter)character).company().addFeesCollected(((VirtualCharacter)character).cost());
+		}
 	}
 
 	@Override
@@ -221,13 +228,25 @@ public class ShowClass implements Show {
 	}
 	
 	@Override
-	public Iterator<Episode> showOutline() {
+	public Iterator<Episode> characterOutline(Character character) {
 		List<Episode> characterOutline = new ArrayList<Episode>();
 		Iterator<Season> iterator = SeasonList.iterator();
 		while(iterator.hasNext()) {
 			Iterator<Episode> episodesList = iterator.next().episodesList();
 			while (episodesList.hasNext()) {
-				characterOutline.add(episodesList.next());
+				Episode episode = episodesList.next();
+				Iterator<Event> eventsList = episode.eventsList();
+				boolean finded = false;
+				while (eventsList.hasNext() && !finded) {
+					Iterator<Character> involvedCharacters = eventsList.next().involvedCharacters();
+					while(involvedCharacters.hasNext() && !finded)
+						if (involvedCharacters.next().equals(character)) {
+							characterOutline.add(episode);
+							finded = true;
+						}
+							
+				
+				}
 			}
 		}
 		return characterOutline.iterator();

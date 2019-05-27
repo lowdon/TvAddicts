@@ -128,9 +128,9 @@ public interface TvAddicts {
 	CGI kingOfGDI() throws NoVirtualCharactersException;
 	
 	/**
-	 * resumo do <code>Show</code>
+	 * resumo do <code>Show</code> nos episodios onde participa o <code>Character</code>
 	 * @return lista dos episodios
 	 */
-	Iterator<Episode> showOutline () throws NoShowSelectedException;
+	Iterator<Episode> characterOutline (Character character) throws NoShowSelectedException;
 	
 }

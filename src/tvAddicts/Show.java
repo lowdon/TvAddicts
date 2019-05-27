@@ -114,9 +114,9 @@ public interface Show extends Comparable<Show>{
 	Iterator<Character> characterListIterator();
 	
 	/**
-	 * resumo do <code>Show</code>
+	 * resumo do <code>Show</code> nos episodios onde participa o <code>Character</code>
 	 * @return lista dos episodios
 	 */
-	Iterator<Episode> showOutline(); 
+	Iterator<Episode> characterOutline(Character character); 
 	
 }
