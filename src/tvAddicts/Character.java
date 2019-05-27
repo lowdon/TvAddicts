@@ -3,7 +3,10 @@ package tvAddicts;
 import java.util.Iterator;
 
 public interface Character  extends Comparable<Character>{
-	Actor actor();
+	
+	Show show();
+	
+	String characterName();
 	
 	void addParent(Character child);
 	
@@ -15,7 +18,11 @@ public interface Character  extends Comparable<Character>{
 	
 	Iterator<Character> parentsIterator();
 	
+	int parentsNumber();
+	
 	Iterator<Character> kidsIterator();
+	
+	int kidsNumber();
 	
 	Iterator<Character> siblingsIterator();
 	

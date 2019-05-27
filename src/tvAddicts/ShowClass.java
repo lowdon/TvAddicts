@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import exceptions.*;
+
 public class ShowClass implements Show {
 
 	private final String name;
@@ -53,48 +55,88 @@ public class ShowClass implements Show {
 	}
 
 	@Override
-	public void addEpisode(int seasonNum, String espisodeName) {
-		SeasonList.get(seasonNum).addEpisode(espisodeName);
+	public Episode addEpisode(int seasonNum, String espisodeName) throws UnknownSeasonException{
+		unknownSeasonExeption(seasonNum);
+		return SeasonList.get(seasonNum).addEpisode(espisodeName, this);
 	}
 
 	@Override
-	public void addRealCharacter(String characterName, Actor actor, int feeByEpisode) {
-		characterList.put(characterName, new RealCharacterClass (characterName, actor, feeByEpisode));
+	public Character addRealCharacter(String characterName, Actor actor, int feeByEpisode) throws DuplicateCharacterException, NegativeFeeException {
+		duplicateCharacterExeption(characterName);
+		negativeFeeExeption(feeByEpisode);
+		RealCharacter character = new RealCharacterClass (characterName, actor, feeByEpisode,this);
+		characterList.put(characterName, character);
+		return character;
 	}
 
 	@Override
-	public void addVirtualCharacter(String characterName, CGI company, int costPerSeason) {
-		characterList.put(characterName, new VirtualCharacterClass (characterName, company, costPerSeason));
+	public Character addVirtualCharacter(String characterName, CGI company, int costPerSeason) throws DuplicateCharacterException {
+		duplicateCharacterExeption(characterName);
+		VirtualCharacter character = new VirtualCharacterClass (characterName, company, costPerSeason,this);
+		characterList.put(characterName, character);
+		return character;
 	}
 
 	@Override
-	public void addRelationship(String character1Name, String character2Name) {
+	public void addRelationship(String character1Name, String character2Name) throws SameCharacterException, UnknownCharacterException, RepeatedRelationshipException {
+		sameCharacterExeption(character1Name, character2Name);
+		unknownCharacterExeption(character1Name);
+		unknownCharacterExeption(character2Name);
 		Character parent = characterList.get(character1Name);
 		Character child = characterList.get(character2Name);
+		repeatedRelationshipExeption(parent, child);
 		parent.addChild(child);
 		child.addParent(parent);
 	}
 
 	@Override
-	public void addRomance(String character1Name, String character2Name) {
+	public void addRomance(String character1Name, String character2Name) throws SameCharacterException, UnknownCharacterException, RepeatedRomanceException {
+		sameCharacterExeption(character1Name, character2Name);
+		unknownCharacterExeption(character1Name);
+		unknownCharacterExeption(character2Name);
 		Character character1 = characterList.get(character1Name);
 		Character character2 = characterList.get(character2Name);
+		repeatedRomanceExeption(character1, character2);
 		character1.addRomance(character2);
 		character2.addRomance(character1);
 	}
 
 	@Override
-	public void addEvent(String descriptionOfTheEvent, int seasonNum, int episodeNum, Iterator<Character> involvedCharacters) {
-		SeasonList.get(seasonNum).addEvent(descriptionOfTheEvent, episodeNum, involvedCharacters);
+	public void addEvent(String descriptionOfTheEvent, int seasonNum, int episodeNum, Iterator<String> involvedCharacters) throws UnknownSeasonException, UnknownEpisodeException, UnknownCharacterException, SameCharacterException {
+		unknownSeasonExeption(seasonNum);
+		unknownEpisodeExeption(seasonNum,episodeNum);
+		Iterator<String> involvedCharactersIterator = involvedCharacters;
+		while(involvedCharactersIterator.hasNext()) {
+			unknownCharacterExeption(involvedCharactersIterator.next());
+		}
+		ArrayList<String> involvedCharactersList = new ArrayList<String>();
+		involvedCharactersIterator = involvedCharacters;
+		while(involvedCharactersIterator.hasNext()) {
+			involvedCharactersList.add(involvedCharactersIterator.next());
+		}
+		for (int i = 0; i < involvedCharactersList.size(); i++)
+			for (int j = 1; j < involvedCharactersList.size(); j++)
+				sameCharacterExeption(involvedCharactersList.get(i), involvedCharactersList.get(j));
+		
+		ArrayList<Character> auxList = new ArrayList<Character>();
+		while (involvedCharacters.hasNext())
+			auxList.add(characterList.get(involvedCharacters.next()));
+		Iterator<Character> auxIterator = auxList.iterator();
+		
+		SeasonList.get(seasonNum-1).addEvent(descriptionOfTheEvent, episodeNum, auxIterator);
 	}
 
 	@Override
-	public void addQuote(int seasonNum, int episodeNum, String characterName, String quote) {
+	public void addQuote(int seasonNum, int episodeNum, String characterName, String quote) throws UnknownSeasonException, UnknownEpisodeException, UnknownCharacterException {
+		unknownSeasonExeption(seasonNum);
+		unknownEpisodeExeption(seasonNum,episodeNum);
+		unknownCharacterExeption(characterName);
 		characterList.get(characterName).addQuote(seasonNum, episodeNum, quote);
 	}
 
 	@Override
-	public Iterator<Episode> seasonsOutline(int startingSeason, int endingSeason) {
+	public Iterator<Episode> seasonsOutline(int startingSeason, int endingSeason) throws InvalidSeasonsIntervalException {
+		invalidSeasonsIntervalExeption(startingSeason, endingSeason);
 		List<Episode> seasonsOutline = new ArrayList<Episode>();
 		for (int i = startingSeason - 1; i < endingSeason ; i++) {
 			Iterator<Episode> episodesList = SeasonList.get(i).episodesList();
@@ -106,24 +148,22 @@ public class ShowClass implements Show {
 	}
 
 	@Override
-	public Character character(String characterName) {
+	public Character character(String characterName) throws UnknownCharacterException{
+		unknownCharacterExeption(characterName);
 		return characterList.get(characterName);
 	}
 
 	
 	@Override
-	public Iterator<Character> howAreTheseTwoRelated(String character1Name, String character2Name) {
+	public Iterator<Character> howAreTheseTwoRelated(String character1Name, String character2Name) throws UnknownCharacterException, SameCharacterException,NoRealatedCharactersException {
+		unknownCharacterExeption(character1Name);
+		unknownCharacterExeption(character2Name);
+		sameCharacterExeption(character1Name, character2Name);
 		Character character1 = characterList.get(character1Name);
 		Character character2 = characterList.get(character2Name);
 		List<Character> related = new ArrayList<Character>();
 		howAreTheseTwoRelatedAux(character1, character2, related);
-		
-		if (related.size() == 0) {
-			howAreTheseTwoRelatedAux(character2, character1, related);
-			if (related.size() == 0) {
-				return null;
-			}
-		}			
+		noRealatedCharactersException(character1, character2, related);			
 		return related.iterator();
 		
 	}
@@ -155,7 +195,7 @@ public class ShowClass implements Show {
 	}
 
 	@Override
-	public Iterator<Character> famousQuotes(String quote) {
+	public Iterator<Character> famousQuotes(String quote) throws  UnknownQuoteException{
 		Set<Character> famousQuotes = new TreeSet<Character>();
 		Iterator<Character> characterList = characterListIterator();
 		while(characterList.hasNext()) {
@@ -169,6 +209,7 @@ public class ShowClass implements Show {
 				}	
 			}
 		}
+		unknownQuoteException(famousQuotes);
 		return famousQuotes.iterator();
 	}
 
@@ -176,5 +217,70 @@ public class ShowClass implements Show {
 	public Iterator<Character> characterListIterator() {
 		return characterList.values().iterator();
 	}
+	
+	private void unknownQuoteException(Set<Character> famousQuotes) throws UnknownQuoteException {
+		if (famousQuotes.size() == 0)
+			throw new UnknownQuoteException();
+	}
+	
+	private void noRealatedCharactersException(Character character1, Character character2, List<Character> related)
+			throws NoRealatedCharactersException {
+		if (related.size() == 0) {
+			howAreTheseTwoRelatedAux(character2, character1, related);
+			if (related.size() == 0) {
+				throw new NoRealatedCharactersException();
+			}
+		}
+	}
+	
+	private void unknownSeasonExeption(int seasonNum) throws UnknownSeasonException {
+		if(seasonNum<0 || seasonNum >= SeasonList.size())
+				throw new UnknownSeasonException(name());
+	}
+	
+	private void invalidSeasonsIntervalExeption(int startingSeason, int endingSeason) throws InvalidSeasonsIntervalException {
+		if(startingSeason<0 || endingSeason >= SeasonList.size() || startingSeason < endingSeason)
+			throw new InvalidSeasonsIntervalException();
+	}
 
+	private void sameCharacterExeption(String character1Name, String character2Name) throws SameCharacterException {
+		if (character1Name.equals(character2Name))
+			throw new SameCharacterException();
+	}
+	
+	private void unknownCharacterExeption(String characterName) throws UnknownCharacterException {
+		if (!characterList.containsKey(characterName))
+			throw new UnknownCharacterException(characterName);
+	}
+	
+	private void repeatedRomanceExeption(Character character1, Character character2) throws RepeatedRomanceException {
+		Iterator<Character> romanticIterator = character1.romanticIterator();
+		while (romanticIterator.hasNext())
+			if(romanticIterator.next().equals(character2))
+				throw new RepeatedRomanceException();
+	}
+	
+	private void repeatedRelationshipExeption(Character parent, Character child) throws RepeatedRelationshipException {
+		Iterator<Character> kidsIterator = parent.kidsIterator();
+		while(kidsIterator.hasNext())
+			if (kidsIterator.next().equals(child))
+				throw new RepeatedRelationshipException();
+	}
+	
+	private void negativeFeeExeption(int feeByEpisode) throws NegativeFeeException {
+		if (feeByEpisode < 0)
+				throw new NegativeFeeException();
+	}
+	
+	private void unknownEpisodeExeption(int seasonNum,int episodeNum) throws UnknownEpisodeException {
+		if(episodeNum<0 || episodeNum >= SeasonList.get(seasonNum-1).episodesNumber())
+				throw new UnknownEpisodeException(name());
+	}
+	
+	private void duplicateCharacterExeption(String characterName) throws DuplicateCharacterException {
+		Iterator<String> characterListIterator = characterList.keySet().iterator();
+		while (characterListIterator.hasNext())
+			if(characterListIterator.next().equals(characterName))
+				throw new DuplicateCharacterException();
+	}
 }

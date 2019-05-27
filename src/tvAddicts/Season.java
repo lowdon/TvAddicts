@@ -2,6 +2,7 @@ package tvAddicts;
 
 import java.util.Iterator;
 
+
 public interface Season {
 
 	/**
@@ -18,7 +19,7 @@ public interface Season {
 	 * adiciona um <code>Episode</code>
 	 * @param espisodeName nome do <code>Episode a adicionar</code>
 	 */
-	void addEpisode(String espisodeName);
+	Episode addEpisode(String espisodeName, Show show);
 	
 	/**
 	 * adiciona um <code>Event</code>

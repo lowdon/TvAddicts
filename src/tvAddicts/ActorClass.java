@@ -4,8 +4,10 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class ActorClass implements Actor {
+public class ActorClass implements Actor{
 
+	private int romanticNumber;
+	private int romanticShowsNumber;
 	private final String name;
 	private Set<Show> rolesList;
 	
@@ -13,6 +15,8 @@ public class ActorClass implements Actor {
 	public ActorClass(String name) {
 		this.name = name;
 		rolesList = new TreeSet<Show>();
+		romanticNumber = 0;
+		romanticShowsNumber = 0;
 	}
 
 	@Override
@@ -30,4 +34,57 @@ public class ActorClass implements Actor {
 		rolesList.add(show);
 	}
 
+	@Override
+	public int rolesNumber() {
+		return rolesList.size();
+	}
+
+	
+	
+	@Override
+	public int romanticNumber() {
+		return romanticNumber;
+	}
+
+	
+
+	@Override
+	public void addRomance() {
+		romanticNumber++;
+	}
+
+	@Override
+	public int romanticShowsNumber() {
+		return romanticShowsNumber;
+	}
+
+	@Override
+	public void addFirstRomanceInShow() {
+		romanticShowsNumber++;
+	}
+	
+	@Override
+	public int compareTo(Actor arg0) {
+		if (romanticNumber > arg0.romanticNumber())
+			return -1;
+		else if (romanticNumber < arg0.romanticNumber())
+			return 1;
+		else {
+			if (rolesNumber() < arg0.rolesNumber())
+				return -1;
+			else if (rolesNumber() > arg0.rolesNumber())
+				return 1;
+			else {
+				if (romanticShowsNumber < arg0.romanticShowsNumber())
+					return 1;
+				else if (romanticShowsNumber > arg0.romanticShowsNumber())
+					return -1;
+				else {
+					return name.compareTo(arg0.name());
+				}
+			}
+		}
+	}
+
+	
 }

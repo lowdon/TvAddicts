@@ -4,6 +4,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+
+import exceptions.*;
+
 import java.util.HashMap;
 
 public class TvAddictsClass implements TvAddicts {
@@ -25,22 +28,26 @@ public class TvAddictsClass implements TvAddicts {
 	}
 
 	@Override
-	public Show currentShow() {
+	public Show currentShow() throws NoShowSelectedException {
+		noShowSelectedExeption();
 		return currentShow;
 	}
 
 	@Override
-	public void addShow(String showName) {
+	public void addShow(String showName) throws ShowAlreadyExistsException {
+		showAlreadyExistsEx(showName);
 		showList.put(showName, new ShowClass(showName));
 	}
 
 	@Override
-	public void switchToShow(String showName) {
+	public void switchToShow(String showName) throws UnknownShowException{
+		unknownShowEx(showName);
 		currentShow = showList.get(showName);
 	}
 
 	@Override
-	public void addSeason() {
+	public void addSeason() throws NoShowSelectedException {
+		noShowSelectedExeption();
 		currentShow.addSeason();
 		Iterator<Character> characterList = currentShow.characterListIterator();
 		while (characterList.hasNext()) {
@@ -52,12 +59,14 @@ public class TvAddictsClass implements TvAddicts {
 	}
 
 	@Override
-	public void addEpisode(int seasonNum, String espisodeName) {
-		currentShow.addEpisode(seasonNum, espisodeName);
+	public Episode addEpisode(int seasonNum, String espisodeName) throws NoShowSelectedException,UnknownSeasonException {
+		noShowSelectedExeption();
+		return currentShow.addEpisode(seasonNum, espisodeName);
 	}
 	
 	@Override
-	public void addRealCharacter(String characterName, String actorName, int feeByEpisode) {
+	public Character addRealCharacter(String characterName, String actorName, int feeByEpisode) throws NoShowSelectedException, DuplicateCharacterException, NegativeFeeException {
+		noShowSelectedExeption();
 		Actor actor;
 		if (actorsList.containsKey(actorName)) {
 			actor = actorsList.get(actorName);
@@ -67,13 +76,15 @@ public class TvAddictsClass implements TvAddicts {
 			actor = new ActorClass(actorName);
 			actorsList.put(actorName, actor);
 		}
-		currentShow.addRealCharacter(characterName, actor, feeByEpisode);
+		Character character = currentShow.addRealCharacter(characterName, actor, feeByEpisode);
 		actor.addRole(currentShow);
 		sortedActorsList.add(actor);
+		return character;
 	}
 
 	@Override
-	public void addVirtualCharacter(String characterName, String companyName, int costPerSeason) {
+	public Character addVirtualCharacter(String characterName, String companyName, int costPerSeason) throws NoShowSelectedException, DuplicateCharacterException {
+		noShowSelectedExeption();
 		CGI company;
 		if (cGIList.containsKey(companyName)) {
 			company = cGIList.get(companyName);
@@ -83,19 +94,22 @@ public class TvAddictsClass implements TvAddicts {
 			company = new CGIClass(companyName);
 			cGIList.put(companyName, company);
 		}
-		currentShow.addVirtualCharacter(characterName, company, costPerSeason);
+		Character character = currentShow.addVirtualCharacter(characterName, company, costPerSeason);
 		company.addVirtualCharacter();
 		company.addFeesCollected(costPerSeason);
 		sortedCGIList.add(company);
+		return character;
 	}
 
 	@Override
-	public void addRelationship(String character1Name, String character2Name) {
+	public void addRelationship(String character1Name, String character2Name) throws NoShowSelectedException, SameCharacterException, UnknownCharacterException, RepeatedRelationshipException {
+		noShowSelectedExeption();
 		currentShow.addRelationship(character1Name, character2Name);
 	}
 
 	@Override
-	public void addRomance(String character1Name, String character2Name) {
+	public void addRomance(String character1Name, String character2Name)  throws NoShowSelectedException, SameCharacterException, UnknownCharacterException, RepeatedRomanceException{
+		noShowSelectedExeption();
 		Actor actor1 = actorsList.get(character1Name);
 		Actor actor2 = actorsList.get(character2Name);
 		
@@ -112,49 +126,107 @@ public class TvAddictsClass implements TvAddicts {
 	}
 
 	@Override
-	public void addEvent(String descriptionOfTheEvent, int seasonNum, int episodeNum, Iterator<Character> involvedCharacters) {
+	public void addEvent(String descriptionOfTheEvent, int seasonNum, int episodeNum, Iterator<String> involvedCharacters) throws NoShowSelectedException, UnknownSeasonException, UnknownEpisodeException, UnknownCharacterException, SameCharacterException {
+		noShowSelectedExeption();
 		currentShow.addEvent(descriptionOfTheEvent, seasonNum, episodeNum, involvedCharacters);
 	}
 
 	@Override
-	public void addQuote(int seasonNum, int episodeNum, String characterName, String quote) {
+	public void addQuote(int seasonNum, int episodeNum, String characterName, String quote) throws NoShowSelectedException, UnknownSeasonException, UnknownEpisodeException, UnknownCharacterException {
+		noShowSelectedExeption();
 		currentShow.addQuote(seasonNum, episodeNum, characterName, quote);
 	}
 
 	@Override
-	public Iterator<Episode> seasonsOutline(int startingSeason, int endingSeason) {
+	public Iterator<Episode> seasonsOutline(int startingSeason, int endingSeason) throws NoShowSelectedException, InvalidSeasonsIntervalException{
+		noShowSelectedExeption();
 		return currentShow.seasonsOutline(startingSeason, endingSeason);
 	}
 
 	@Override
-	public Character characterResume(String characterName) {
+	public Character character(String characterName)  throws NoShowSelectedException, UnknownCharacterException {
+		noShowSelectedExeption();
 		return currentShow.character(characterName);
 	}
 
 	@Override
-	public Iterator<Character> howAreTheseTwoRelated(String character1Name, String character2Name) {
+	public Iterator<Character> howAreTheseTwoRelated(String character1Name, String character2Name) throws NoShowSelectedException, UnknownCharacterException, SameCharacterException,NoRealatedCharactersException {
+		noShowSelectedExeption();
 		return currentShow.howAreTheseTwoRelated(character1Name, character2Name);
 	}
 
 	@Override
-	public Iterator<Character> famousQuotes(String quote) {
+	public Iterator<Character> famousQuotes(String quote) throws NoShowSelectedException, UnknownQuoteException {
+		noShowSelectedExeption();
 		return currentShow.famousQuotes(quote);
 	}
 
 	@Override
-	public Iterator<Show> alsoAppearsOn(String characterName) {
-		return currentShow.character(characterName).actor().rolesListIterator();
+	public Iterator<Show> alsoAppearsOn(String characterName) throws NoShowSelectedException, UnknownCharacterException, VirtualActorException {
+		noShowSelectedExeption();
+		Character character = character(characterName);
+		virtualActorEx(characterName);
+		return ((RealCharacter)character).actor().rolesListIterator();
+	}
+
+	private void virtualActorEx(String characterName) throws UnknownCharacterException, VirtualActorException {
+		if (!(currentShow.character(characterName) instanceof RealCharacter))
+			throw new VirtualActorException();
 	}
 
 	@Override
-	public Iterator<Actor> mostRomantic(String actorName) {
+	public Iterator<Actor> mostRomantic(String actorName) throws UnknownActorException, NoRomanticCharactersException {
+		unknownActorException(actorName);
+		noRomanticCharactersException();
 		return ((TreeSet<Actor>)sortedActorsList).headSet(actorsList.get(actorName)).iterator();
 	}
 
 	@Override
-	public CGI kingOfGDI() {
-		
+	public CGI kingOfGDI() throws NoVirtualCharactersException {
+		noVirtualCharactersException();
 		return ((TreeSet<CGI>)sortedCGIList).first();
 	}
 
+	private void noVirtualCharactersException() throws NoVirtualCharactersException {
+		if (((TreeSet<CGI>)sortedCGIList).first().equals(null))
+			throw new NoVirtualCharactersException();
+	}
+
+
+	private void noRomanticCharactersException() throws NoRomanticCharactersException {
+		if(((TreeSet<Actor>)sortedActorsList).first().romanticNumber() == 0)
+			throw new NoRomanticCharactersException();
+	}
+
+	private void unknownActorException(String actorName) throws UnknownActorException {
+		Iterator<String> actorListIterator = actorsList.keySet().iterator();
+		boolean finded = false;
+		while (actorListIterator.hasNext())
+			if (actorListIterator.next().equals(actorName))
+				finded = true;
+		if (!finded)
+			throw new UnknownActorException();
+	}
+
+	private void noShowSelectedExeption() throws NoShowSelectedException {
+		if(currentShow.equals(null))
+			throw new NoShowSelectedException();
+	}
+	
+	private void showAlreadyExistsEx(String showName) throws ShowAlreadyExistsException {
+		Iterator<String> showListIterator = showList.keySet().iterator();
+		while (showListIterator.hasNext())
+			if (showListIterator.next().equals(showName))
+				throw new ShowAlreadyExistsException();
+	}
+	
+	private void unknownShowEx(String showName) throws UnknownShowException {
+		Iterator<String> showListIterator = showList.keySet().iterator();
+		boolean finded = false;
+		while (showListIterator.hasNext())
+			if (showListIterator.next().equals(showName))
+				finded = true;
+		if (!finded)
+			throw new UnknownShowException();
+	}
 }

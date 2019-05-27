@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+
 public class SeasonClass implements Season {
 
 	private final int seasonNumber;
@@ -25,14 +26,16 @@ public class SeasonClass implements Season {
 	}
 
 	@Override
-	public void addEpisode(String espisodeName) {
+	public Episode addEpisode(String espisodeName, Show show) {
 		int episodeNumber = episodesList.size();
-		episodesList.add(new EpisodeClass(espisodeName,episodeNumber));
+		EpisodeClass episode = new EpisodeClass(espisodeName,episodeNumber, show, this);
+		episodesList.add(episode);
+		return episode;
 	}
 
 	@Override
-	public void addEvent(String descriptionOfTheEvent, int episodeNum, Iterator<Character> involvedCharacters) {
-		Episode episode =episodesList.get(episodeNum-1);
+	public void addEvent(String descriptionOfTheEvent, int episodeNum, Iterator<Character> involvedCharacters){
+		Episode episode = episodesList.get(episodeNum-1);
 		episode.addEvent(descriptionOfTheEvent, involvedCharacters);
 	}
 
@@ -40,5 +43,7 @@ public class SeasonClass implements Season {
 	public Iterator<Episode> episodesList() {
 		return episodesList.iterator();
 	}
+	
+
 
 }

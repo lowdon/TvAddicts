@@ -7,12 +7,16 @@ import java.util.Iterator;
 public class EpisodeClass implements Episode {
 
 	private final String name;
+	private final Show show;
+	private final Season season;
 	private final int number;
 	private List<Event> eventsList;
 	
-	public EpisodeClass(String name, int number) {
+	public EpisodeClass(String name, int number, Show show, Season season) {
 		this.name = name;
 		this.number = number;
+		this.show = show;
+		this.season = season;
 		eventsList = new ArrayList<Event>();
 	}
 	
@@ -24,6 +28,16 @@ public class EpisodeClass implements Episode {
 	@Override
 	public String name() {
 		return name;
+	}
+	
+	@Override
+	public Show show() {
+		return show;
+	}
+	
+	@Override
+	public Season season() {
+		return season;
 	}
 
 	@Override

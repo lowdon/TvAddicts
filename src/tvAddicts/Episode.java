@@ -15,6 +15,16 @@ public interface Episode {
 	public String name();
 	
 	/**
+	 * @return nome identificativo do <code>Episode</code>
+	 */
+	public Show show();
+	
+	/**
+	 * @return nome identificativo do <code>Episode</code>
+	 */
+	public Season season();
+	
+	/**
 	 * cira um novo <code>Event</code>
 	 * @param descriptionOfTheEvent descricao do <code>Event</code>
 	 * @param involvedCharacters lista com todo o <code>Character</code> que intervem nesse <code>Event</code>
