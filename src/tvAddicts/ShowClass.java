@@ -180,7 +180,7 @@ public class ShowClass implements Show {
 			counter++;
 			if(kid.equals(character2)) {
 				related.add(character2);
-				counter = -1; // -1 é um valor que um size nunca pode tomar por isso foi escolhido aqui
+				counter = -1; // -1 Ã© um valor que um size nunca pode tomar por isso foi escolhido aqui
 				finded=true;
 			}
 			else {
@@ -191,7 +191,8 @@ public class ShowClass implements Show {
 				counter--;
 			}
 		}
-		related.clear();
+	if (!finded) 	
+              related.clear();
 	}
 
 	@Override
