@@ -8,6 +8,7 @@ public class ActorClass implements Actor{
 
 	private int romanticNumber;
 	private int romanticShowsNumber;
+        private int rolesNumber;
 	private final String name;
 	private Set<Show> rolesList;
 	
@@ -15,6 +16,7 @@ public class ActorClass implements Actor{
 	public ActorClass(String name) {
 		this.name = name;
 		rolesList = new TreeSet<Show>();
+		rolesNumber = 0;
 		romanticNumber = 0;
 		romanticShowsNumber = 0;
 	}
@@ -31,12 +33,14 @@ public class ActorClass implements Actor{
 
 	@Override
 	public void addRole(Show show) {
-		rolesList.add(show);
+		if(!rolesList.contains(show))
+			rolesList.add(show);
+		rolesNumber++;
 	}
 
 	@Override
 	public int rolesNumber() {
-		return rolesList.size();
+		return rolesNumber;
 	}
 
 	
