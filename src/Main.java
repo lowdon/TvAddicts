@@ -7,7 +7,7 @@ import exceptions.*;
 
 public class Main {
 	//Constantes que definem os comandos
-	 public static final String HELP    = "helpC";
+	 public static final String HELP    = "help";
 	 public static final String CURRENT_SHOW = "currentshow";
 	 public static final String ADD_SHOW      = "addshow";
 	 public static final String SWITCH_TO_SHOW      = "switchtoshow";
@@ -99,15 +99,19 @@ public class Main {
 			 default:
 				 System.out.println("Unknown command. Type help to see available commands.");
 			 }
-			 System.out.println();
 			 comm = getCommand(in);
 		 }
 		 System.out.println("Bye!");
 		 in.close();
 	 }
 	
+	 private static void prompt() {
+			System.out.print("> ");
+		}
+	 
 	private static String getCommand(Scanner in) {
 		String input;
+		prompt();
 		input = in.nextLine().toLowerCase();
 		return input;
 	}

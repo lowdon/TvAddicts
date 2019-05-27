@@ -20,6 +20,7 @@ public class ShowClass implements Show {
 		this.name = name;
 		SeasonList = new ArrayList<Season>();
 		characterList = new HashMap<String,Character>();
+	    addSeason();
 	}
 
 	@Override
@@ -57,7 +58,7 @@ public class ShowClass implements Show {
 	@Override
 	public Episode addEpisode(int seasonNum, String espisodeName) throws UnknownSeasonException{
 		unknownSeasonExeption(seasonNum);
-		return SeasonList.get(seasonNum).addEpisode(espisodeName, this);
+		return SeasonList.get(seasonNum - 1).addEpisode(espisodeName, this);
 	}
 
 	@Override
@@ -123,7 +124,7 @@ public class ShowClass implements Show {
 			auxList.add(characterList.get(involvedCharacters.next()));
 		Iterator<Character> auxIterator = auxList.iterator();
 		
-		SeasonList.get(seasonNum-1).addEvent(descriptionOfTheEvent, episodeNum, auxIterator);
+		SeasonList.get(seasonNum - 1).addEvent(descriptionOfTheEvent, episodeNum, auxIterator);
 	}
 
 	@Override
@@ -235,7 +236,7 @@ public class ShowClass implements Show {
 	}
 	
 	private void unknownSeasonExeption(int seasonNum) throws UnknownSeasonException {
-		if(seasonNum<0 || seasonNum >= SeasonList.size())
+		if(seasonNum<=0 || seasonNum > SeasonList.size())
 				throw new UnknownSeasonException(name());
 	}
 	
@@ -274,7 +275,7 @@ public class ShowClass implements Show {
 	}
 	
 	private void unknownEpisodeExeption(int seasonNum,int episodeNum) throws UnknownEpisodeException {
-		if(episodeNum<0 || episodeNum >= SeasonList.get(seasonNum-1).episodesNumber())
+		if(episodeNum<0 || episodeNum >= SeasonList.get(seasonNum - 1).episodesNumber())
 				throw new UnknownEpisodeException(name());
 	}
 	

@@ -27,7 +27,7 @@ public class SeasonClass implements Season {
 
 	@Override
 	public Episode addEpisode(String espisodeName, Show show) {
-		int episodeNumber = episodesList.size();
+		int episodeNumber = episodesList.size() + 1;
 		EpisodeClass episode = new EpisodeClass(espisodeName,episodeNumber, show, this);
 		episodesList.add(episode);
 		return episode;
