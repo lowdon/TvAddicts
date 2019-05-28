@@ -1,12 +1,15 @@
 package tvAddicts;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 import exceptions.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TvAddictsClass implements TvAddicts {
@@ -75,14 +78,11 @@ public class TvAddictsClass implements TvAddicts {
 		Actor actor;
 		if (actorsList.containsKey(actorName)) {
 			actor = actorsList.get(actorName);
-			sortedActorsList.remove(actor);
 		} else {
 			actor = new ActorClass(actorName);
 			actorsList.put(actorName, actor);
 		}
 		Character character = currentShow.addRealCharacter(characterName, actor, feeByEpisode);
-		actor.addRole(currentShow);
-		sortedActorsList.add(actor);
 		return character;
 	}
 
@@ -116,19 +116,7 @@ public class TvAddictsClass implements TvAddicts {
 	public void addRomance(String character1Name, String character2Name) throws NoShowSelectedException,
 			SameCharacterException, UnknownCharacterException, RepeatedRomanceException {
 		noShowSelectedExeption();
-		Actor actor1 = actorsList.get(character1Name);
-		Actor actor2 = actorsList.get(character2Name);
-
 		currentShow.addRomance(character1Name, character2Name);
-
-		sortedActorsList.remove(actor1);
-		sortedActorsList.remove(actor2);
-
-		actor1 = actorsList.get(character1Name);
-		actor2 = actorsList.get(character2Name);
-
-		sortedActorsList.add(actor1);
-		sortedActorsList.add(actor2);
 	}
 
 	@Override
@@ -190,9 +178,16 @@ public class TvAddictsClass implements TvAddicts {
 	@Override
 	public Iterator<Actor> mostRomantic(String actorName) throws UnknownActorException, NoRomanticCharactersException {
 		unknownActorException(actorName);
+		for(Actor actor: actorsList.values())
+			sortedActorsList.add(actor);
 		noRomanticCharactersException();
-		return ((TreeSet<Actor>) sortedActorsList).headSet(actorsList.get(actorName)).iterator();
-	}
+		Actor actor = actorsList.get(actorName);
+		SortedSet<Actor> set = ((TreeSet<Actor>) sortedActorsList).headSet(actor);
+		Object[] array = set.toArray();
+		int index = array.length;
+		array[index] = actor;
+		return new Iterator<Actor>(array);
+		}
 
 	@Override
 	public CGI kingOfGDI() throws NoVirtualCharactersException {
@@ -200,13 +195,12 @@ public class TvAddictsClass implements TvAddicts {
 		return ((TreeSet<CGI>) sortedCGIList).first();
 	}
 
-
 	@Override
 	public Iterator<Episode> characterOutline(Character character) throws NoShowSelectedException {
 		noShowSelectedExeption();
 		return currentShow.characterOutline(character);
 	}
-	
+
 	private void noVirtualCharactersException() throws NoVirtualCharactersException {
 		if (((TreeSet<CGI>) sortedCGIList).first().equals(null))
 			throw new NoVirtualCharactersException();

@@ -80,11 +80,11 @@ public class ActorClass implements Actor{
 				return 1;
 			else {
 				if (romanticShowsNumber < arg0.romanticShowsNumber())
-					return 1;
-				else if (romanticShowsNumber > arg0.romanticShowsNumber())
 					return -1;
+				else if (romanticShowsNumber > arg0.romanticShowsNumber())
+					return 1;
 				else {
-					return name.compareTo(arg0.name());
+					return  name.compareTo(arg0.name());
 				}
 			}
 		}

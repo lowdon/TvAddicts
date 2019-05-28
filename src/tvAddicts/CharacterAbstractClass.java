@@ -2,18 +2,28 @@ package tvAddicts;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public abstract class CharacterAbstractClass implements Character {
 
-	private ArrayList<Character> parents;
-	private ArrayList<Character> children;
-	private ArrayList<Character> romances;
-	private ArrayList<Character> siblings;
-	private	ArrayList<Quote> quotes;
-	protected String name;
-	protected int cost;
-	protected Show show;
 	
+	private List<Character> parents;
+	private List<Character> children;
+	private List<Character> romances;
+	private List<Character> siblings;
+	private	List<Quote> quotes;
+	private final String name;
+	private final Show show;
+	
+	public CharacterAbstractClass(String name,Show show) {
+		this.name = name;
+		this.show = show;
+		parents = new ArrayList<Character>();
+		children = new ArrayList<Character>();
+		romances = new ArrayList<Character>();
+		siblings = new ArrayList<Character>();
+		quotes = new ArrayList<Quote>();
+	}
 	public String kidsNumber(){
 		return Integer.toString(children.size());
 	}
@@ -28,10 +38,6 @@ public abstract class CharacterAbstractClass implements Character {
 	
 	public String name(){
 		return this.name;
-	}
-	
-	public int cost(){
-		return this.cost;
 	}
 	
 	@Override
@@ -61,8 +67,13 @@ public abstract class CharacterAbstractClass implements Character {
 	public void addParent(Character parent) {	
 		this.parents.add(parent);
 		Iterator<Character> kidsIterator = parent.kidsIterator();
-		while(kidsIterator.hasNext())
-			siblings.add(kidsIterator.next());
+		while(kidsIterator.hasNext()) {
+			Character kid = kidsIterator.next();
+			if(!siblings.contains(kid) &&  !kid.equals(this)) {
+				siblings.add(kid);
+			    kid.addSiblings(this);
+			}
+		}
 	}
 	
 	@Override
@@ -75,15 +86,11 @@ public abstract class CharacterAbstractClass implements Character {
 	public void addRomance(Character character) {
 		this.romances.add(character);
 	}
-
-	private ArrayList<Quote> getQuotes(){
-		return this.quotes;
-	}
 	
 	@Override
 	public void addQuote(int seasonNum, int episodeNum, String quote) {
 		Quote newQuote = new QuoteClass(seasonNum, episodeNum, quote);
-		this.getQuotes().add(newQuote);
+		this.quotes.add(newQuote);
 	}
 
 	@Override
@@ -109,6 +116,12 @@ public abstract class CharacterAbstractClass implements Character {
 	@Override
 	public Iterator<Quote> quotesIterator() {
 		return quotes.iterator();
+	}
+	
+	@Override
+	public void addSiblings(Character character) {
+		if(!siblings.contains(character))
+		siblings.add(character);
 	}
 
 }

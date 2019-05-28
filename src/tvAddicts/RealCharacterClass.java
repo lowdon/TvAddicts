@@ -2,14 +2,13 @@ package tvAddicts;
 
 public class RealCharacterClass extends CharacterAbstractClass implements RealCharacter {
 	
-	private Actor actor;
-	
+	private final Actor actor;
+	private final int feeByEpisode;
 	
 	public RealCharacterClass(String characterName, Actor actor, int feeByEpisode, Show show) {
-		this.name = characterName;
+		super(characterName, show);
 		this.actor = actor;
-		this.cost = feeByEpisode;
-		this.show = show;
+		this.feeByEpisode = feeByEpisode;
 		actor.addRole(show);
 	}
 
@@ -21,7 +20,7 @@ public class RealCharacterClass extends CharacterAbstractClass implements RealCh
 
 	@Override
 	public int feeByEpisode() {
-		return cost();
+		return feeByEpisode;
 	}
 	
 	@Override

@@ -3,13 +3,12 @@ package tvAddicts;
 
 public class VirtualCharacterClass extends CharacterAbstractClass implements VirtualCharacter {
 	
-	private CGI company;
-
+	private final CGI company;
+    private final int costPerSeason;
 	public VirtualCharacterClass(String characterName, CGI company, int costPerSeason, Show show) {
-		this.name = characterName;
+		super(characterName, show);
 		this.company = company;
-		this.cost = costPerSeason;
-		this.show = show;
+		this.costPerSeason = costPerSeason;
 		company.addVirtualCharacter();
 		company.addFeesCollected(costPerSeason);
 	}
@@ -21,7 +20,7 @@ public class VirtualCharacterClass extends CharacterAbstractClass implements Vir
 
 	@Override
 	public int costPerSeason() {
-		return this.cost;
+		return this.costPerSeason;
 	}
 
 }

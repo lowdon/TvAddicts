@@ -8,8 +8,6 @@ public interface Character extends Comparable<Character>{
 	
 	String name();
 	
-	int cost();
-	
 	void addParent(Character parent);
 	
 	void addChild(Character child);
@@ -31,4 +29,6 @@ public interface Character extends Comparable<Character>{
 	String kidsNumber();
 
 	String parentsNumber();
+
+	void addSiblings(Character character);
 }
