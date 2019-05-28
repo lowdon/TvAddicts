@@ -1,15 +1,12 @@
 package tvAddicts;
 
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.SortedSet;
 import java.util.TreeSet;
 
 import exceptions.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TvAddictsClass implements TvAddicts {
@@ -182,11 +179,13 @@ public class TvAddictsClass implements TvAddicts {
 			sortedActorsList.add(actor);
 		noRomanticCharactersException();
 		Actor actor = actorsList.get(actorName);
-		SortedSet<Actor> set = ((TreeSet<Actor>) sortedActorsList).headSet(actor);
-		Object[] array = set.toArray();
-		int index = array.length;
-		array[index] = actor;
-		return new Iterator<Actor>(array);
+		Set<Actor> set = new TreeSet<Actor>();
+		Iterator<Actor> iterator = ((TreeSet<Actor>) sortedActorsList).headSet(actor).iterator();
+		while (iterator.hasNext()) {
+			set.add(iterator.next());
+		}
+		set.add(actor);
+		return set.iterator();
 		}
 
 	@Override

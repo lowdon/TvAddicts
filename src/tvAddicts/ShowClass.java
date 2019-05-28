@@ -252,7 +252,8 @@ public class ShowClass implements Show {
 				Episode episode = episodesList.next();
 				Iterator<Event> eventsList = episode.eventsList();
 				boolean finded = false;
-				while (eventsList.hasNext() && !finded) {
+				while (eventsList.hasNext()) {
+					
 					Iterator<Character> involvedCharacters = eventsList.next().involvedCharacters();
 					while (involvedCharacters.hasNext() && !finded)
 						if (involvedCharacters.next().equals(character)) {

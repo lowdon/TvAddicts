@@ -260,13 +260,18 @@ public class Main {
 	}
 
 	private static void addEvent(Scanner in, TvAddicts addicts) {
+		
 		String descriptionOfTheEvent = in.nextLine().trim();
 		int seasonNum = in.nextInt();
 		int episodeNum = in.nextInt();
 		int involvedCharactersNum = in.nextInt();
+		in.nextLine().trim();
 		ArrayList<String> involvedCharacters = new ArrayList<String>(involvedCharactersNum);
-		for (int i = 0; i < involvedCharactersNum; i++)
-			involvedCharacters.add(in.nextLine().trim());
+		for (int i = 0; i < involvedCharactersNum; i++) {
+			String caracter = in.nextLine().trim();
+		involvedCharacters.add(caracter);
+		}
+			
 		try {
 			addicts.addEvent(descriptionOfTheEvent, seasonNum, episodeNum, involvedCharacters.iterator());
 			System.out.println("Event added.");
@@ -278,7 +283,7 @@ public class Main {
 			System.out
 					.println(exception.getMessage() + " S" + seasonNum + " does not have episode " + episodeNum + "!");
 		} catch (UnknownCharacterException exception) {
-			System.out.println("Who is " + exception.getMessage() + "!");
+			System.out.println("Who is " + exception.getMessage() + "?");
 		} catch (SameCharacterException exception) {
 			System.out.println("Duplicate character names are not allowed!");
 		}
