@@ -122,21 +122,31 @@ public class ShowClass implements Show {
 		unknownSeasonExeption(seasonNum);
 		unknownEpisodeExeption(seasonNum, episodeNum);
 		Iterator<String> involvedCharactersIterator = involvedCharacters;
-		while (involvedCharactersIterator.hasNext()) {
-			unknownCharacterExeption(involvedCharactersIterator.next());
-		}
+			
 		ArrayList<String> involvedCharactersList = new ArrayList<String>();
 		involvedCharactersIterator = involvedCharacters;
 		while (involvedCharactersIterator.hasNext()) {
 			involvedCharactersList.add(involvedCharactersIterator.next());
 		}
+		
+		
 		for (int i = 0; i < involvedCharactersList.size(); i++)
-			for (int j = 1; j < involvedCharactersList.size(); j++)
-				sameCharacterExeption(involvedCharactersList.get(i), involvedCharactersList.get(j));
+			unknownCharacterExeption(involvedCharactersList.get(i));
+				
+		for (int i = 0; i < involvedCharactersList.size(); i++)
+			for (int j = 1; j < involvedCharactersList.size(); j++) {
+				if(i != j)
+					sameCharacterExeption(involvedCharactersList.get(i), involvedCharactersList.get(j));
+			}
+				
 
-		ArrayList<Character> auxList = new ArrayList<Character>();
-		while (involvedCharacters.hasNext())
-			auxList.add(characterList.get(involvedCharacters.next()));
+		List<Character> auxList = new ArrayList<Character>();
+		
+		for (int i = 0; i < involvedCharactersList.size(); i++)
+			auxList.add(i,character(involvedCharactersList.get(i)));
+		
+		
+		
 		Iterator<Character> auxIterator = auxList.iterator();
 
 		SeasonList.get(seasonNum - 1).addEvent(descriptionOfTheEvent, episodeNum, auxIterator);
@@ -251,16 +261,12 @@ public class ShowClass implements Show {
 			while (episodesList.hasNext()) {
 				Episode episode = episodesList.next();
 				Iterator<Event> eventsList = episode.eventsList();
-				boolean finded = false;
 				while (eventsList.hasNext()) {
-					
 					Iterator<Character> involvedCharacters = eventsList.next().involvedCharacters();
-					while (involvedCharacters.hasNext() && !finded)
+					while (involvedCharacters.hasNext())
 						if (involvedCharacters.next().equals(character)) {
 							characterOutline.add(episode);
-							finded = true;
 						}
-
 				}
 			}
 		}
@@ -286,7 +292,7 @@ public class ShowClass implements Show {
 
 	private void invalidSeasonsIntervalExeption(int startingSeason, int endingSeason)
 			throws InvalidSeasonsIntervalException {
-		if (startingSeason < 0 || endingSeason >= SeasonList.size() || startingSeason < endingSeason)
+		if (startingSeason < 1 || endingSeason > SeasonList.size() || startingSeason > endingSeason)
 			throw new InvalidSeasonsIntervalException();
 	}
 

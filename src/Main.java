@@ -269,7 +269,7 @@ public class Main {
 		ArrayList<String> involvedCharacters = new ArrayList<String>(involvedCharactersNum);
 		for (int i = 0; i < involvedCharactersNum; i++) {
 			String caracter = in.nextLine().trim();
-		involvedCharacters.add(caracter);
+			involvedCharacters.add(caracter);
 		}
 			
 		try {
@@ -293,11 +293,12 @@ public class Main {
 	private static void addQuote(Scanner in, TvAddicts addicts) {
 		int seasonNum = in.nextInt();
 		int episodeNum = in.nextInt();
+		in.nextLine().trim();
 		String characterName = in.nextLine().trim();
 		String quote = in.nextLine().trim();
 		try {
 			addicts.addQuote(seasonNum, episodeNum, characterName, quote);
-			System.out.println("Quote added!");
+			System.out.println("Quote added.");
 		} catch (NoShowSelectedException exception) {
 			System.out.println("No show is selected!");
 		} catch (UnknownSeasonException exception) {
@@ -306,30 +307,36 @@ public class Main {
 			System.out
 					.println(exception.getMessage() + " S" + seasonNum + " does not have episode " + episodeNum + "!");
 		} catch (UnknownCharacterException exception) {
-			System.out.println("Who is " + exception.getMessage() + "!");
+			System.out.println("Who is " + exception.getMessage() + "?");
 		}
 	}
 
 	private static void seasonsOutline(Scanner in, TvAddicts addicts) {
 		int startingSeason = in.nextInt();
 		int endingSeason = in.nextInt();
+		in.nextLine().trim();
 		try {
 			Iterator<Episode> seasonsOutline = addicts.seasonsOutline(startingSeason, endingSeason);
-			int aux = 0;
-			while (seasonsOutline.hasNext()) {
-				Episode episode = seasonsOutline.next();
-				if (aux == 0)
-					System.out.println(episode.show().name());
-				aux++;
-				System.out.println("S" + episode.season().number() + " Ep" + episode.number() + ": " + episode.name());
-				Iterator<Event> eventsList = episode.eventsList();
-				while (eventsList.hasNext())
-					System.out.println(eventsList.next().descriptionOfTheEvent());
+			if (!seasonsOutline.hasNext()) {
+				System.out.println(addicts.currentShow().name());
+			}
+			else {
+				int aux = 0;
+				while (seasonsOutline.hasNext()) {
+					Episode episode = seasonsOutline.next();
+					if (aux == 0)
+						System.out.println(episode.show().name());
+					aux++;
+					System.out.println("S" + episode.season().number() + " EP" + episode.number() + ": " + episode.name());
+					Iterator<Event> eventsList = episode.eventsList();
+					while (eventsList.hasNext())
+						System.out.println(eventsList.next().descriptionOfTheEvent());
+				}
 			}
 		} catch (NoShowSelectedException exception) {
 			System.out.println("No show is selected!");
 		} catch (InvalidSeasonsIntervalException exception) {
-			System.out.println("Who is \" + exception.getMessage() + \"!");
+			System.out.println("Invalid seasons interval!");
 		}
 	}
 
@@ -359,7 +366,7 @@ public class Main {
 				System.out.println("");
 			}
 
-			System.out.print("Siblings:");
+			System.out.print("Siblings: ");
 
 			Iterator<Character> SiblingsIterator = character.siblingsIterator();
 			if (!SiblingsIterator.hasNext())
@@ -384,7 +391,7 @@ public class Main {
 			Iterator<Episode> characterOutline = addicts.characterOutline(character);
 			while (characterOutline.hasNext()) {
 				Episode episode = characterOutline.next();
-				System.out.println("S" + episode.season().number() + " Ep" + episode.number() + ": " + episode.name());
+				System.out.println("S" + episode.season().number() + " EP" + episode.number() + ": " + episode.name());
 				Iterator<Event> eventsList = episode.eventsList();
 				while (eventsList.hasNext()) {
 					Event event = eventsList.next();
@@ -434,10 +441,12 @@ public class Main {
 		try {
 			Iterator<Character> famousQuotes = addicts.famousQuotes(quote);
 			if (famousQuotes.hasNext()) {
-				System.out.println(famousQuotes.next().name());
+				System.out.print(famousQuotes.next().name());
 				while (famousQuotes.hasNext())
-					System.out.println(", " + famousQuotes.next().name());
+					System.out.print(", " + famousQuotes.next().name());
 			}
+			System.out.println("");
+			
 
 		} catch (NoShowSelectedException exception) {
 			System.out.println("No show is selected!");
