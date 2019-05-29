@@ -287,7 +287,6 @@ public class Main {
 		} catch (SameCharacterException exception) {
 			System.out.println("Duplicate character names are not allowed!");
 		}
-
 	}
 
 	private static void addQuote(Scanner in, TvAddicts addicts) {
@@ -346,48 +345,20 @@ public class Main {
 			Character character = addicts.character(characterName);
 			System.out.print("Parents: ");
 			Iterator<Character> parentsIterator = character.parentsIterator();
-			if (!parentsIterator.hasNext())
-				System.out.println("None.");
-			else {
-				System.out.print(parentsIterator.next().name());
-				while (parentsIterator.hasNext())
-					System.out.print(", " + parentsIterator.next().name());
-				System.out.println("");
-			}
+			resume(parentsIterator);
 
 			System.out.print("Kids: ");
 			Iterator<Character> kidsIterator = character.kidsIterator();
-			if (!kidsIterator.hasNext())
-				System.out.println("None.");
-			else {
-				System.out.print(kidsIterator.next().name());
-				while (kidsIterator.hasNext())
-					System.out.print(", " + kidsIterator.next().name());
-				System.out.println("");
-			}
+			resume(kidsIterator);
 
 			System.out.print("Siblings: ");
-
 			Iterator<Character> SiblingsIterator = character.siblingsIterator();
-			if (!SiblingsIterator.hasNext())
-				System.out.println("None.");
-			else {
-				System.out.print(SiblingsIterator.next().name());
-				while (SiblingsIterator.hasNext())
-					System.out.print(", " + SiblingsIterator.next().name());
-				System.out.println("");
-			}
+			resume(SiblingsIterator);
 
 			System.out.print("Romantic relationships: ");
 			Iterator<Character> RomanticIterator = character.romanticIterator();
-			if (!RomanticIterator.hasNext())
-				System.out.println("None.");
-			else {
-				System.out.print(RomanticIterator.next().name());
-				while (RomanticIterator.hasNext())
-					System.out.print(", " + RomanticIterator.next().name());
-				System.out.println("");
-			}
+			resume(RomanticIterator);
+			
 			Iterator<Episode> characterOutline = addicts.characterOutline(character);
 			while (characterOutline.hasNext()) {
 				Episode episode = characterOutline.next();
@@ -408,6 +379,17 @@ public class Main {
 			System.out.println("Who is " + exception.getMessage() + "?");
 		}
 
+	}
+
+	private static void resume(Iterator<Character> itr) {
+		if (!itr.hasNext())
+			System.out.println("None.");
+		else {
+			System.out.print(itr.next().name());
+			while (itr.hasNext())
+				System.out.print(", " + itr.next().name());
+			System.out.println("");
+		}
 	}
 
 	private static void howAreTheseTwoRelated(Scanner in, TvAddicts addicts) {
@@ -490,8 +472,8 @@ public class Main {
 	private static void kingOfCGI(Scanner in, TvAddicts addicts) {
 
 		try {
-			CGI kingOfGDI = addicts.kingOfGDI();
-			System.out.println(kingOfGDI.name() + " " + kingOfGDI.feesCollected());
+			CGI kingOfCGI = addicts.kingOfCGI();
+			System.out.println(kingOfCGI.name() + " " + kingOfCGI.feesCollected());
 		} catch (NoVirtualCharactersException exception) {
 			System.out.println("This is the real thing, this is art!");
 		}
