@@ -7,6 +7,12 @@ import exceptions.*;
 public interface Show extends Comparable<Show>{
 
 	/**
+	 * @param source
+	 * @param comp
+	 * @return true if source is in relationship with comparing character
+	 */
+	boolean isInRelationWith(String source, String comp);
+	/**
 	 * @return nome identificativo do <code>Show</code>
 	 */
 	String name();

@@ -36,6 +36,7 @@ public class SeasonClass implements Season {
 	@Override
 	public Event addEvent(String descriptionOfTheEvent, int episodeNum, Iterator<Character> involvedCharacters){
 		Episode episode = episodesList.get(episodeNum-1);
+		episode.addEvent(descriptionOfTheEvent, involvedCharacters);
 		Event event = episode.addEvent(descriptionOfTheEvent, involvedCharacters);
 		return event;
 	}
