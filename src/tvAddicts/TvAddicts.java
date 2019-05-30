@@ -125,7 +125,7 @@ public interface TvAddicts {
 	/**
 	 * @return <code>CGI</code> que mais lucro vez com os seus <code>VirtualCharacter</code>
 	 */
-	CGI kingOfGDI() throws NoVirtualCharactersException;
+	CGI kingOfCGI() throws NoVirtualCharactersException;
 	
 	/**
 	 * resumo do <code>Show</code> nos episodios onde participa o <code>Character</code>

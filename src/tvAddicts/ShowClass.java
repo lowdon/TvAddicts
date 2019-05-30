@@ -53,14 +53,6 @@ public class ShowClass implements Show {
 		int seasonNumber = SeasonList.size();
 		seasonNumber++;
 		SeasonList.add(new SeasonClass(seasonNumber));
-
-		Iterator<String> iterator = characterList.keySet().iterator();
-		while (iterator.hasNext()) {
-			Character character = characterList.get(iterator.next());
-			if (character instanceof VirtualCharacter)
-				((VirtualCharacter) character).company()
-						.addFeesCollected(((VirtualCharacter) character).costPerSeason());
-		}
 	}
 
 	@Override
@@ -149,7 +141,37 @@ public class ShowClass implements Show {
 		
 		Iterator<Character> auxIterator = auxList.iterator();
 
-		SeasonList.get(seasonNum - 1).addEvent(descriptionOfTheEvent, episodeNum, auxIterator);
+		Event event = SeasonList.get(seasonNum - 1).addEvent(descriptionOfTheEvent, episodeNum, auxIterator);
+		
+		
+		addFeesColected(seasonNum, event);
+	}
+
+	private void addFeesColected(int seasonNum, Event event) {
+		Iterator<Character> characters = event.involvedCharacters();
+		while (characters.hasNext()) {
+			int i = 0;
+			Character character = characters.next();
+			
+			if (character instanceof VirtualCharacter) {
+			Iterator<Episode> seasonOutline;
+			ArrayList<Episode> season = new ArrayList<Episode>();
+			seasonOutline(season, seasonNum - 1);
+			seasonOutline = season.iterator();
+			while(seasonOutline.hasNext()) {
+				Iterator<Event> eventsList = seasonOutline.next().eventsList();
+				while (eventsList.hasNext()) {
+					Iterator<Character> characterList = eventsList.next().involvedCharacters();
+					while(characterList.hasNext()) {
+						if (characterList.next().equals(character))
+							i++;
+					}
+				}
+			}
+			if (i == 1) 
+				((VirtualCharacter)character).company().addFeesCollected(((VirtualCharacter)character).costPerSeason());
+			}
+		}
 	}
 
 	@Override
@@ -167,12 +189,16 @@ public class ShowClass implements Show {
 		invalidSeasonsIntervalExeption(startingSeason, endingSeason);
 		List<Episode> seasonsOutline = new ArrayList<Episode>();
 		for (int i = startingSeason - 1; i < endingSeason; i++) {
-			Iterator<Episode> episodesList = SeasonList.get(i).episodesList();
-			while (episodesList.hasNext()) {
-				seasonsOutline.add(episodesList.next());
-			}
+			seasonOutline(seasonsOutline, i);
 		}
 		return seasonsOutline.iterator();
+	}
+
+	private void seasonOutline(List<Episode> seasonsOutline, int i) {
+		Iterator<Episode> episodesList = SeasonList.get(i).episodesList();
+		while (episodesList.hasNext()) {
+			seasonsOutline.add(episodesList.next());
+		}
 	}
 
 	@Override

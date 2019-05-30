@@ -41,8 +41,10 @@ public class EpisodeClass implements Episode {
 	}
 
 	@Override
-	public void addEvent(String descriptionOfTheEvent, Iterator<Character> involvedCharacters) {
-		eventsList.add(new EventClass(descriptionOfTheEvent, involvedCharacters));
+	public Event addEvent(String descriptionOfTheEvent, Iterator<Character> involvedCharacters) {
+		EventClass event = new EventClass(descriptionOfTheEvent, involvedCharacters);
+		eventsList.add(event);
+		return event;
 	}
 
 	@Override

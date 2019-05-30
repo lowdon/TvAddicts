@@ -10,7 +10,6 @@ public class VirtualCharacterClass extends CharacterAbstractClass implements Vir
 		this.company = company;
 		this.costPerSeason = costPerSeason;
 		company.addVirtualCharacter();
-		company.addFeesCollected(costPerSeason);
 	}
 
 	@Override

@@ -27,7 +27,7 @@ public interface Season {
 	 * @param episodeNum numero identificativo do <code>Episode</code> onde ocorre o <code>Event</code>
 	 * @param involvedCharacters lista com todo o <code>Character</code> que intervem nesse <code>Event</code>
 	 */
-	void addEvent(String descriptionOfTheEvent, int episodeNum, Iterator<Character> involvedCharacters);
+	Event addEvent(String descriptionOfTheEvent, int episodeNum, Iterator<Character> involvedCharacters);
 	
 	/**
 	 * @return lista com todo o <code>Episode</code> da <code>Season</code>

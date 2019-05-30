@@ -189,7 +189,7 @@ public class TvAddictsClass implements TvAddicts {
 		}
 
 	@Override
-	public CGI kingOfGDI() throws NoVirtualCharactersException {
+	public CGI kingOfCGI() throws NoVirtualCharactersException {
 		noVirtualCharactersException();
 		return ((TreeSet<CGI>) sortedCGIList).first();
 	}

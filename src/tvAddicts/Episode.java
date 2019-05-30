@@ -29,7 +29,7 @@ public interface Episode {
 	 * @param descriptionOfTheEvent descricao do <code>Event</code>
 	 * @param involvedCharacters lista com todo o <code>Character</code> que intervem nesse <code>Event</code>
 	 */
-	public void addEvent(String descriptionOfTheEvent, Iterator<Character> involvedCharacters);
+	public Event addEvent(String descriptionOfTheEvent, Iterator<Character> involvedCharacters);
 	
 	/**
 	 * @return lista com todo o <code>Event</code> do <code>Episode</code>
