@@ -30,6 +30,12 @@ public class CGIClass implements CGI {
 	public void addFeesCollected(int fees) {
 		feesCollected += fees;
 	}
+	
+	@Override
+	public void initFees() {
+		feesCollected=0;
+	}
+	
 
 	@Override
 	public int feesCollected() {

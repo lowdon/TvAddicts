@@ -4,7 +4,14 @@ import java.util.Iterator;
 
 
 public interface Season {
-
+	Iterator<Character> characterListIterator();
+	
+	void addCharacter (Character character);
+	
+	
+	boolean hasThisCharacter(Character character);
+	
+	
 	/**
 	 * @return numero de <code>Episode</code> na <code>Season</code>
 	 */

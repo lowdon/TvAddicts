@@ -14,7 +14,6 @@ public class TvAddictsClass implements TvAddicts {
 	private Map<String, Show> showList;
 	private Map<String, CGI> cGIList;
 	private Map<String, Actor> actorsList;
-	private Set<CGI> sortedCGIList;
 	private Set<Actor> sortedActorsList;
 	private Show currentShow;
 
@@ -22,7 +21,6 @@ public class TvAddictsClass implements TvAddicts {
 		showList = new HashMap<String, Show>();
 		cGIList = new HashMap<String, CGI>();
 		actorsList = new HashMap<String, Actor>();
-		sortedCGIList = new TreeSet<CGI>();
 		sortedActorsList = new TreeSet<Actor>();
 		currentShow = null;
 	}
@@ -51,14 +49,6 @@ public class TvAddictsClass implements TvAddicts {
 	public void addSeason() throws NoShowSelectedException {
 		noShowSelectedExeption();
 		currentShow.addSeason();
-		Iterator<Character> characterList = currentShow.characterListIterator();
-		while (characterList.hasNext()) {
-			Character character = characterList.next();
-			if (character instanceof VirtualCharacter) {
-				((VirtualCharacter) character).company()
-						.addFeesCollected(((VirtualCharacter) character).costPerSeason());
-			}
-		}
 	}
 
 	@Override
@@ -90,15 +80,12 @@ public class TvAddictsClass implements TvAddicts {
 		CGI company;
 		if (cGIList.containsKey(companyName)) {
 			company = cGIList.get(companyName);
-			sortedCGIList.remove(company);
 		} else {
 			company = new CGIClass(companyName);
 			cGIList.put(companyName, company);
 		}
 		Character character = currentShow.addVirtualCharacter(characterName, company, costPerSeason);
 		company.addVirtualCharacter();
-		company.addFeesCollected(costPerSeason);
-		sortedCGIList.add(company);
 		return character;
 	}
 
@@ -175,7 +162,7 @@ public class TvAddictsClass implements TvAddicts {
 	@Override
 	public Iterator<Actor> mostRomantic(String actorName) throws UnknownActorException, NoRomanticCharactersException {
 		unknownActorException(actorName);
-		for(Actor actor: actorsList.values())
+		for (Actor actor : actorsList.values())
 			sortedActorsList.add(actor);
 		noRomanticCharactersException();
 		Actor actor = actorsList.get(actorName);
@@ -186,22 +173,42 @@ public class TvAddictsClass implements TvAddicts {
 		}
 		set.add(actor);
 		return set.iterator();
-		}
+	}
 
 	@Override
 	public CGI kingOfCGI() throws NoVirtualCharactersException {
 		noVirtualCharactersException();
-		return ((TreeSet<CGI>) sortedCGIList).first();
-	}
 
-	@Override
-	public Iterator<Episode> characterOutline(Character character) throws NoShowSelectedException {
-		noShowSelectedExeption();
-		return currentShow.characterOutline(character);
+		Iterator<CGI> cGIs = cGIList.values().iterator();
+		while (cGIs.hasNext()) {
+			cGIs.next().initFees();
+		}
+		Iterator<Show> shows = showList.values().iterator();
+		while (shows.hasNext()) {
+			Iterator<Season> seasonIterator = shows.next().seasonsIterator();
+			while (seasonIterator.hasNext()) {
+				Iterator<Character> characterListIterator = seasonIterator.next().characterListIterator();
+				while (characterListIterator.hasNext()) {
+					Character character = characterListIterator.next();
+					if (character instanceof VirtualCharacter) {
+						VirtualCharacter virtualCaracter = (VirtualCharacter) character;
+						virtualCaracter.company().addFeesCollected(virtualCaracter.costPerSeason());
+					}
+				}
+			}
+		}
+		TreeSet<CGI> sortedCGIList = new TreeSet<CGI>();
+		Iterator<CGI> cGIList = this.cGIList.values().iterator();
+		while (cGIList.hasNext()) {
+			sortedCGIList.add(cGIList.next());
+
+		}
+
+		return sortedCGIList.first();
 	}
 
 	private void noVirtualCharactersException() throws NoVirtualCharactersException {
-		if (((TreeSet<CGI>) sortedCGIList).first().equals(null))
+		if (cGIList.isEmpty())
 			throw new NoVirtualCharactersException();
 	}
 

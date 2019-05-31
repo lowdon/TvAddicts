@@ -6,10 +6,12 @@ public class EventClass implements Event {
 
 	private final String descriptionOfTheEvent;
 	private final Iterator<Character> involvedCharacters;
+	private final Episode episode;
 	
-	public EventClass(String descriptionOfTheEvent, Iterator<Character> involvedCharacters) {
+	public EventClass(String descriptionOfTheEvent, Iterator<Character> involvedCharacters, Episode episode) {
 		this.descriptionOfTheEvent = descriptionOfTheEvent;
 		this.involvedCharacters = involvedCharacters;
+		this.episode = episode;
 	}
 
 	@Override
@@ -22,4 +24,8 @@ public class EventClass implements Event {
 		return involvedCharacters;
 	}
 
+	@Override
+	public Episode episode() {
+		return this.episode;
+	}
 }

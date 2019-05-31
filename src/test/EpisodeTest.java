@@ -1,6 +1,7 @@
 package test;
 
 import org.junit.Assert.*;
+import org.junit.Before;
 
 import java.util.ArrayList;
 
@@ -24,7 +25,7 @@ public class EpisodeTest {
 	private static TvAddicts addicts;
 	private static ArrayList<String> involvedCharacters;
 	
-	@BeforeClass
+	@Before
 	public static void setUpBeforeClass() throws Exception {
 		addicts = new TvAddictsClass();
 		Show bag = new ShowClass("big bag theory");

@@ -6,12 +6,15 @@ import exceptions.*;
 
 public interface Show extends Comparable<Show>{
 
+	Iterator<Season> seasonsIterator();
+	
+	
 	/**
 	 * @param source
 	 * @param comp
 	 * @return true if source is in relationship with comparing character
 	 */
-	boolean isInRelationWith(String source, String comp);
+	boolean isInRelationWith(String source, String comp) throws UnknownCharacterException;
 	/**
 	 * @return nome identificativo do <code>Show</code>
 	 */
@@ -118,11 +121,5 @@ public interface Show extends Comparable<Show>{
 	 * @return lista de <code>Character</code> que fazem parte do <code>Show</code>
 	 */
 	Iterator<Character> characterListIterator();
-	
-	/**
-	 * resumo do <code>Show</code> nos episodios onde participa o <code>Character</code>
-	 * @return lista dos episodios
-	 */
-	Iterator<Episode> characterOutline(Character character); 
 	
 }

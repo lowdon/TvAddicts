@@ -13,4 +13,8 @@ public interface Event {
 	 * @return lista com todo o <code>Character</code> envolvido no <code>Event</code>
 	 */
 	Iterator<Character> involvedCharacters();
+	
+	Episode episode();
 }
+
+

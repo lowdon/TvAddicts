@@ -23,6 +23,11 @@ public interface CGI extends Comparable<CGI> {
 	 */
 	void addFeesCollected(int fees);
 	
+	
+	/**
+	 * renicializa o <code>feesCollected/<code>
+	 */
+	void initFees();
 	/**
 	 * @return dinheiro coletado pela <code>CGI</code>
 	 */

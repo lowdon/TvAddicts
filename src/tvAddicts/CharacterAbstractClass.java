@@ -14,6 +14,7 @@ public abstract class CharacterAbstractClass implements Character {
 	private	List<Quote> quotes;
 	private final String name;
 	private final Show show;
+	private List<Event> events;
 	
 	public CharacterAbstractClass(String name,Show show) {
 		this.name = name;
@@ -23,6 +24,7 @@ public abstract class CharacterAbstractClass implements Character {
 		romances = new ArrayList<Character>();
 		siblings = new ArrayList<Character>();
 		quotes = new ArrayList<Quote>();
+		events = new ArrayList<Event>();
 	}
 	public String kidsNumber(){
 		return Integer.toString(children.size());
@@ -124,4 +126,13 @@ public abstract class CharacterAbstractClass implements Character {
 		siblings.add(character);
 	}
 
+	@Override
+	public void addEvent(Event event) {
+		events.add(event);
+	}
+	
+	@Override
+	public Iterator<Event> eventsIterator() {
+		return events.iterator();
+	}
 }

@@ -1,3 +1,4 @@
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
@@ -27,13 +28,6 @@ public class Main {
 	public static final String KING_OF_CGI = "kingofcgi";
 	public static final String QUIT = "exit";
 
-	// Constantes que definem as mensagens para o utilizador
-	public static final String CONTACT_EXISTS = "Contact already exists.";
-	public static final String NAME_NOT_EXIST = "Contact does not exist.";
-	public static final String CONTACT_ADDED = "Contact added.";
-	public static final String CONTACT_REMOVED = "Contact removed.";
-	public static final String CONTACT_UPDATED = "Contact updated.";
-	public static final String BOOK_EMPTY = "Contact book empty.";
 
 	public static void main(String[] args) {
 		Scanner in = new Scanner(System.in);
@@ -359,18 +353,18 @@ public class Main {
 			Iterator<Character> RomanticIterator = character.romanticIterator();
 			resume(RomanticIterator);
 			
-			Iterator<Episode> characterOutline = addicts.characterOutline(character);
+			Iterator<Event> characterOutline = character.eventsIterator();
+			int actualEpisodeNumber = 0;
 			while (characterOutline.hasNext()) {
-				Episode episode = characterOutline.next();
-				System.out.println("S" + episode.season().number() + " EP" + episode.number() + ": " + episode.name());
-				Iterator<Event> eventsList = episode.eventsList();
-				while (eventsList.hasNext()) {
-					Event event = eventsList.next();
-					Iterator<Character> involvedCharacters = event.involvedCharacters();
-					while (involvedCharacters.hasNext())
-						if (involvedCharacters.next().equals(character))
-							System.out.println(event.descriptionOfTheEvent());
+				Event event = characterOutline.next();
+				if (actualEpisodeNumber != event.episode().number()) {
+					actualEpisodeNumber = event.episode().number();
+					System.out.println("S" + event.episode().season().number() + " EP" + event.episode().number() + ": " + event.episode().name());
 				}
+				System.out.println(event.descriptionOfTheEvent());
+				
+				
+				
 			}
 
 		} catch (NoShowSelectedException exception) {

@@ -31,4 +31,8 @@ public interface Character extends Comparable<Character>{
 	String parentsNumber();
 
 	void addSiblings(Character character);
+	
+	void addEvent(Event event);
+	
+	Iterator<Event> eventsIterator();
 }
